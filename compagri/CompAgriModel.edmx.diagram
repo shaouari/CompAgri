@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="90ee4e52825e4ed6bb6d2e01c0e2593e" Name="Diagram1">
+        <EntityTypeShape EntityType="DB_9BA48E_xmldbModel.Connection" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9BA48E_xmldbModel.Property" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9BA48E_xmldbModel.Relation" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9BA48E_xmldbModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9BA48E_xmldbModel.Term" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_9BA48E_xmldbModel.XmlFile" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <AssociationConnector Association="DB_9BA48E_xmldbModel.FK_Connection_Term" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9BA48E_xmldbModel.FK_Connection_Term1" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9BA48E_xmldbModel.FK_Property_Term" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9BA48E_xmldbModel.FK_Relation_Relation_Parent" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9BA48E_xmldbModel.FK_Relation_Term_Child" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_9BA48E_xmldbModel.FK_Term_XmlFile" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

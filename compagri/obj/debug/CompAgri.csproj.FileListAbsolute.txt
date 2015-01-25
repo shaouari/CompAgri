@@ -1,0 +1,35 @@
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\CompAgri.dll.config
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\CompAgri.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\CompAgri.pdb
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\EntityFramework.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\EntityFramework.SqlServer.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\Newtonsoft.Json.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\System.Net.Http.Formatting.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\System.Web.Http.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\System.Web.Http.WebHost.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\EntityFramework.xml
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\EntityFramework.SqlServer.xml
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\Newtonsoft.Json.xml
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\System.Net.Http.Formatting.xml
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\System.Web.Http.xml
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\bin\System.Web.Http.WebHost.xml
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\obj\Debug\CompAgri.csprojResolveAssemblyReference.cache
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\obj\Debug\CompAgri.dll
+E:\Seagate Backup Drive 1\Projects\CompAgri\CompAgri\obj\Debug\CompAgri.pdb
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\CompAgri.dll.config
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\CompAgri.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\CompAgri.pdb
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\EntityFramework.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\EntityFramework.SqlServer.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\Newtonsoft.Json.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\System.Net.Http.Formatting.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\System.Web.Http.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\System.Web.Http.WebHost.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\EntityFramework.xml
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\EntityFramework.SqlServer.xml
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\Newtonsoft.Json.xml
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\System.Net.Http.Formatting.xml
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\System.Web.Http.xml
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\bin\System.Web.Http.WebHost.xml
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\obj\Debug\CompAgri.dll
+C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri\obj\Debug\CompAgri.pdb
