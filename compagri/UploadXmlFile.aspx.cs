@@ -20,6 +20,8 @@ namespace CompAgri
             {
                 String Filename = Path.Combine(Server.MapPath("~/XmlFiles"), FileUpload1.FileName);
                 FileUpload1.SaveAs(Filename);
+
+                Bll.CompAgriBll.UploadFile(Filename);
             }
         }
 

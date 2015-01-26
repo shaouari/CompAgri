@@ -23,6 +23,10 @@ namespace CompAgri.Bll
             DataHelper.DeleteNode(nodeId, parentId);
         }
 
+        public static void UploadFile(string filePath)
+        {
+            DataHelper.UploadFile(filePath);
+        }
         
 
     }
