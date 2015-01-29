@@ -9,3 +9,9 @@ C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri.UI\bin\CompAgri.UI.dll
 C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri.UI\bin\CompAgri.UI.pdb
 C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri.UI\obj\Debug\CompAgri.UI.dll
 C:\Users\עדן\Desktop\CompAgri\CompAgri\CompAgri.UI\obj\Debug\CompAgri.UI.pdb
+C:\Users\עדן\Documents\GitHub\CompAgri\CompAgri.UI\bin\CompAgri.UI.dll.config
+C:\Users\עדן\Documents\GitHub\CompAgri\CompAgri.UI\bin\CompAgri.UI.dll
+C:\Users\עדן\Documents\GitHub\CompAgri\CompAgri.UI\bin\CompAgri.UI.pdb
+C:\Users\עדן\Documents\GitHub\CompAgri\CompAgri.UI\obj\Debug\CompAgri.UI.csprojResolveAssemblyReference.cache
+C:\Users\עדן\Documents\GitHub\CompAgri\CompAgri.UI\obj\Debug\CompAgri.UI.dll
+C:\Users\עדן\Documents\GitHub\CompAgri\CompAgri.UI\obj\Debug\CompAgri.UI.pdb
