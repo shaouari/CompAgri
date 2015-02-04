@@ -50,7 +50,19 @@ namespace CompAgri.Controllers
             Bll.CompAgriBll.DeleteNode(nodeId, parentId);
             return Request.CreateResponse<int>(HttpStatusCode.OK, res);
         }
-    }    
+    }
+
+    public class CompAgriGetXMLFilesController : ApiController
+    {
+        [HttpGet]
+        public HttpResponseMessage GetXMLFiles()
+        {
+            IEnumerable<Models.Terms.XMLFile> xmlfiles = Models.Terms.XMLFile.GetAll();
+
+
+            return Request.CreateResponse<IEnumerable<Models.Terms.XMLFile>>(HttpStatusCode.OK, xmlfiles);
+        }
+    }
 
 
 

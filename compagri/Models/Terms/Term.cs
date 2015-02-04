@@ -121,5 +121,16 @@ namespace CompAgri.Models.Terms
             return this;
         }
 
+        /// <summary>
+        /// Gets all the term connections
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Connection> GetConnections()
+        {
+            using (var db = Database)
+            {
+                return db.Query<Connection>("SELECT * FROM [Connection] WHERE Connection_Left_Term_Id = @Term_Id OR Connection_Right_Term_Id = @Term_Id", this);
+            }
+        }
     }
 }

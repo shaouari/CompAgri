@@ -33,6 +33,18 @@ namespace CompAgri.Models.Terms
             }
         }
 
+        /// <summary>
+        /// FindGet all XMLFiles
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<XMLFile> GetAll()
+        {
+            using (var db = Database)
+            {
+                return db.Query<XMLFile>("SELECT * FROM XmlFile");
+            }
+        }
+
 
         /// <summary>
         /// Saves changes of the XMLFile to the database. If it is a non saved XMLFile creates a new row
@@ -125,5 +137,6 @@ namespace CompAgri.Models.Terms
 
             return tree;
         }
+
     }
 }
