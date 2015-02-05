@@ -121,11 +121,29 @@
                             // directly rejects the promise if $http.get fails
                         }, reject);
                     });
+                },
+
+                getConnectionsPosibleValues: function getConnectionsPosibleValues() {
+                    var self = this;
+                    return $q(function (resolve, reject) {
+                        $http.get(self.apiLocation + "Connections/getPosibleValues").then(function (res) {
+                            return res.data;
+                        }).then(resolve, reject);
+                    });
+                },
+
+                addConnection: function addConnection(data) {
+                    var self = this;
+                    return $q(function (resolve, reject) {
+                        $http.post(self.apiLocation + "Connections/Add", data).then(function (res) {
+                            return res.data;
+                        }).then(resolve, reject);
+                    });
                 }
 
             };
         })
-        .controller('MainCtrl', function ($scope, treeServer) {
+        .controller('MainCtrl', function ($scope, $modal, treeServer) {
 
             $scope.tabsets = [{
                 id: 'left'
@@ -176,15 +194,39 @@
 
                     if (!findLink(leftId, rightId)) { // and there is no link between the items
 
-                        addLink({
-                            first: left,
-                            firstId: leftId,
-                            second: right,
-                            secondId: rightId
+                        var modalInstance = $modal.open({
+                            templateUrl: 'templates/connection.modal.html',
+                            controller: 'ConnectionModalCtrl',
+                            scope: $scope,
+                            resolve: {
+                                data: function () {
+                                    return {
+                                        term1: left,
+                                        term2: right,
+                                        leftId: leftId,
+                                        rightId: rightId
+                                    };
+                                }
+                            }
                         });
-                        drawLine(left, right, false); // and draw
+
+                        modalInstance.result.then(function (data) {
+
+                            data.Connection_Left_Term_Id = left.scope().$nodeScope.$modelValue.id;
+                            data.Connection_Right_Term_Id = right.scope().$nodeScope.$modelValue.id;
+
+                            treeServer.addConnection(data).then(function () {
+                                addLink({
+                                    first: left,
+                                    firstId: leftId,
+                                    second: right,
+                                    secondId: rightId
+                                });
+                                drawLine(left, right, false); // and draw
+                                $scope.resetConnecting(); // and clear state
+                            });
+                        });
                     }
-                    $scope.resetConnecting(); // and clear state
                 }
                 return true;
             };
@@ -284,8 +326,66 @@
             });
 
         })
-        .controller('ConnectionModalCtrl', function ($scope) {
+        .controller('ConnectionModalCtrl', function ($scope, $modalInstance, treeServer, data) {
+            $scope.pvalues = {
+                "Names": [],
+                "Synonyms": [],
+                "TimeLimitation": [],
+                "PositionLimitation": [],
+                "AmountLimitation": [],
+                "ClimateLimitation": [],
+                "SeasonLimitation": [],
+                "Measurement": []
+            }
 
+            $scope.term1 = data.term1.scope().$nodeScope.$modelValue;
+            $scope.term2 = data.term2.scope().$nodeScope.$modelValue;
+
+            treeServer.getConnectionsPosibleValues().then(function (pvalues) {
+                $scope.pvalues = pvalues;
+
+                $scope.errors = function (prop) {
+                    if ($scope.validate && prop === 'Connection_Name') {
+                        if (!$scope.Connection_Name)
+                            $scope.errors.Connection_Name = "The Connection Name is required";
+                        else
+                            $scope.errors.Connection_Name = undefined;
+
+                        return $scope.errors.Connection_Name;
+                    } else if ($scope.validate && prop === 'Connection__Amount_Limitation') {
+                        if ($scope.connectionForm.$error && $scope.connectionForm.$error.number)
+                            $scope.errors.Connection__Amount_Limitation = "The amount limitation must be a number";
+                        else
+                            $scope.errors.Connection__Amount_Limitation = undefined;
+
+                        return $scope.errors.Connection__Amount_Limitation;
+                    }
+                };
+
+
+                $scope.saveConnection = function () {
+                    $scope.validate = true;
+                    if (!$scope.errors('Connection_Name') && !$scope.errors('Connection__Amount_Limitation')) {
+                        $modalInstance.close({
+                            Connection_Name: $scope.Connection_Name,
+                            Connection_Synonym: $scope.Connection_Synonym,
+                            Connection_Time_Limitation: $scope.Connection_Time_Limitation,
+                            Connection_Position_Limitation: $scope.Connection_Position_Limitation,
+                            Connection__Amount_Limitation: $scope.Connection__Amount_Limitation,
+                            Connection_Climate_Limitation: $scope.Connection_Climate_Limitation,
+                            Connection_Season_Limitation: $scope.Connection_Season_Limitation,
+                            Connection_Measurement: $scope.Connection_Measurement
+                        });
+                    };
+                };
+
+                $scope.cancel = function () {
+                    $modalInstance.dismiss("cancel");
+                };
+
+            }, function (e) {
+                $modalInstance.dismiss(e);
+            });
         });
 
     function getTree($el) {
