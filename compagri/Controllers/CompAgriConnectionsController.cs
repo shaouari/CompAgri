@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -54,8 +54,10 @@ namespace CompAgri.Controllers
         [HttpPost]
         public int AddConnection([FromBody] Models.Terms.Connection connection)
         {
-            connection.Save();
-            return connection.Connection_Id;
+            //// This works, uncomment it when the real tree is used
+            //connection.Save();
+            //return connection.Connection_Id;
+            return 0;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace CompAgri.Models.Terms
             public IEnumerable<string> Synonyms { get; set; }
             public IEnumerable<string> TimeLimitation { get; set; }
             public IEnumerable<string> PositionLimitation { get; set; }
-            public IEnumerable<string> AmountLimitation { get; set; }
+            public IEnumerable<int> AmountLimitation { get; set; }
             public IEnumerable<string> ClimateLimitation { get; set; }
             public IEnumerable<string> SeasonLimitation { get; set; }
             public IEnumerable<string> Measurement { get; set; }
@@ -31,7 +31,7 @@ namespace CompAgri.Models.Terms
                     Synonyms = db.Query<string>("Select * from ConnectionSynonyms"),
                     TimeLimitation = db.Query<string>("Select * from ConnectionTimeLimitation"),
                     PositionLimitation = db.Query<string>("Select * from ConnectionPositionLimitation"),
-                    AmountLimitation = db.Query<string>("Select * from ConnectionAmountLimitation"),
+                    AmountLimitation = db.Query<int>("Select * from ConnectionAmountLimitation"),
                     ClimateLimitation = db.Query<string>("Select * from ConnectionClimateLimitation"),
                     SeasonLimitation = db.Query<string>("Select * from ConnectionSeasonLimitation"),
                     Measurement = db.Query<string>("Select * from ConnectionMeasurementUnit")
@@ -42,8 +42,8 @@ namespace CompAgri.Models.Terms
         }
 
         public int Connection_Id { get; set; }
-        public string Connection_Left_Term_Id { get; set; }
-        public string Connection_Right_Term_Id { get; set; }
+        public int Connection_Left_Term_Id { get; set; }
+        public int Connection_Right_Term_Id { get; set; }
         public string Connection_Name { get; set; }
         public string Connection_Synonym { get; set; }
         public string Connection_Time_Limitation { get; set; }

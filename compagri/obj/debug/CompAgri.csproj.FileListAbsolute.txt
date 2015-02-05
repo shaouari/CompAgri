@@ -72,3 +72,6 @@ C:\Users\FaustoArturo\Source\Repo\CompAgri\CompAgri\bin\System.Web.Http.WebHost.
 C:\Users\FaustoArturo\Source\Repo\CompAgri\CompAgri\obj\Debug\CompAgri.csprojResolveAssemblyReference.cache
 C:\Users\FaustoArturo\Source\Repo\CompAgri\CompAgri\obj\Debug\CompAgri.dll
 C:\Users\FaustoArturo\Source\Repo\CompAgri\CompAgri\obj\Debug\CompAgri.pdb
+C:\Users\FaustoArturo\Source\Repo\CompAgri\CompAgri\bin\System.Web.Cors.dll
+C:\Users\FaustoArturo\Source\Repo\CompAgri\CompAgri\bin\System.Web.Http.Cors.dll
+C:\Users\FaustoArturo\Source\Repo\CompAgri\CompAgri\bin\System.Web.Http.Cors.xml
