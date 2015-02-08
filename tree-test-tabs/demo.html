@@ -11,7 +11,7 @@
     <div ng-include="'tabset.html'" ng-repeat="tabset in tabsets"></div>
 
     <script type="text/ng-template" id="tabset.html">
-        <tabset id="{{tabset.id}}_tabset" class="col-sm-4 tabset">
+        <tabset id="{{tabset.id}}_tabset" class="col-sm-6 tabset">
             <tab ng-repeat="tree in trees" heading="{{tree.name}}" select="select($index, tabset.id)">
                 <div ng-model="tree" ng-include="'tree.html'"></div>
             </tab>
