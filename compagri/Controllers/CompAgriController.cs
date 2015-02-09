@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,10 +13,15 @@ namespace CompAgri.Controllers
         [HttpGet]
         public HttpResponseMessage GetTree(int xmlFileId)
         {
-            // The best is to return a tree structure, because the controller parses the response to the asked type anyway
-            string res = "[{\"id\": 1, \"title\": \"1. dragon-breath\", \"items\": []}, {\"id\": 2, \"title\": \"2. moiré-vision\", \"items\": [{ \"id\": 21, \"title\": \"2.1. tofu-animation\", \"items\": [{ \"id\": 211, \"title\": \"2.1.1. spooky-giraffe\", \"items\": []}, {\"id\": 212, \"title\": \"2.1.2. bubble-burst\", \"items\": [] }] }, {\"id\": 22, \"title\": \"2.2. barehand-atomsplitting\", \"items\": []}]}, {\"id\": 3, \"title\": \"3. unicorn-zapper\", \"items\": []}, {\"id\": 4, \"title\": \"4. romantic-transclusion\", \"items\": []}]";
-            //string res = "EFI";
-            return Request.CreateResponse<string>(HttpStatusCode.OK, res);
+            // Get the XMLFile
+            var XmlFile = Models.Terms.XMLFile.Find(xmlFileId);
+
+            // If file not found so we return not found
+            if (XmlFile == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            // We Ask the tree and return the root of the tree
+            return Request.CreateResponse(HttpStatusCode.OK, XmlFile.getXMLAsTree().Root);
         }
     }
 
