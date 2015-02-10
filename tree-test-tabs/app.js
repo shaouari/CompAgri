@@ -138,11 +138,20 @@
                             return res.data;
                         }).then(resolve, reject);
                     });
+                },
+
+                getConnectionsForTerms: function getConnectionsForTerms(termIds) {
+                    var self = this;
+                    return $q(function (resolve, reject) {
+                        $http.get(self.apiLocation + "Connections/ForTerms?termIds=" + termIds.join(',')).then(function (res) {
+                            return res.data;
+                        }).then(resolve, reject);
+                    });
                 }
 
             };
         })
-        .controller('MainCtrl', function ($scope, $modal, treeServer) {
+        .controller('MainCtrl', function ($scope, $modal, treeServer, $q) {
 
             $scope.tabsets = [{
                 id: 'left'
@@ -229,6 +238,52 @@
                 };
 
                 /**
+                 * Recursive function which gets the conectios form the nodes
+                 */
+                function getConnectionsForNodes (nodes, tree) {
+                    if (nodes.length){
+                        return $scope.downloadConnectionsForNodes(nodes.slice(0,5), tree).then(function () {
+                            return getConnectionsForNodes(nodes.slice(5), tree);
+                        });
+                    }
+
+                }
+
+                function getConnectionForNodesChildren (nodes) {
+                    return getConnectionsForNodes(nodes.reduce(function (beg, itm) {
+                        return beg.concat(itm.items);
+                    }, []));
+                }
+
+                /**
+                 * Download the connections for the tree
+                 */
+                $scope.downloadConnections = function downloadConnections(tree) {
+                    return getConnectionsForNodes(tree.list, tree);
+                };
+
+                /**
+                 * Download the connections for the nodes and it childs
+                 */
+                $scope.downloadConnectionsForNodes = function downloadConnectionsForNodes(nodes, tree) {
+                    return $q(function (resolve, reject) {
+                        treeServer.getConnectionsForTerms(nodes.map(function(item) { return item.id })).then(function (connections) {
+                            connections.forEach(function (item) {
+                                addLink({
+                                        firstId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
+                                        secondId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
+                                    });
+                            });
+
+                            if(connections.length) $scope.redrawLines();
+
+                        }).then(function () {
+                            return getConnectionForNodesChildren(nodes);
+                        }).then(resolve, reject);
+                    });
+                };
+
+                /**
                  * Clear the state if connection of nodes is aborted
                  */
                 $scope.resetConnecting = function () {
@@ -307,11 +362,16 @@
                         var tree = this.tree;
                         treeServer.getTree(tree.id).then(function (treeInfo) {
                             tree.list = [treeInfo];
+
+                            $scope.downloadConnections(tree).then(function () {
+                                $scope.redrawLines();
+                            });
+
                             if ($scope.$$phase !== "$digest") $scope.$digest();
                         }, console.log);
+                    } else {
+                        $scope.redrawLines();
                     }
-
-                    $scope.redrawLines();
                 };
 
                 $scope.getTabsetId = function ($el) {
@@ -324,6 +384,8 @@
                 $(window).on('resize', function () {
                     $scope.redrawLines();
                 });
+
+                $scope.downloadConnections($scope.trees[0]);
             }, console.log);
 
         })
