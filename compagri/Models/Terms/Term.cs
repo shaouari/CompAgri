@@ -129,7 +129,7 @@ namespace CompAgri.Models.Terms
         {
             using (var db = Database)
             {
-                return db.Query<Connection>("SELECT c.*, lt.Term_XmlFile_id as Connection_Left_Tree_Id, rt.Term_XmlFile_id as Connection_Right_Tree_Id FROM [Connection] as c LEFT JOIN Term as lt on c.Connection_Left_Term_Id = lt.Term_Id LEFT JOIN Term as rt on c.Connection_Right_Term_Id = rt.Term_Id WHERE c.Connection_Left_Term_Id = @Term_Id", this);
+                return db.Query<Connection>("SELECT c.*, lt.Term_XmlFile_id as Connection_Left_Tree_Id, rt.Term_XmlFile_id as Connection_Right_Tree_Id FROM [Connection] as c LEFT JOIN Term as lt on c.Connection_Left_Term_Id = lt.Term_Id LEFT JOIN Term as rt on c.Connection_Right_Term_Id = rt.Term_Id WHERE c.Connection_Left_Term_Id = @Term_Id OR c.Connection_Right_Term_Id = @Term_Id", this);
             }
         }
     }
