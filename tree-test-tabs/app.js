@@ -228,6 +228,12 @@
                                         second: right,
                                         secondId: rightId
                                     });
+
+                                    /*addLink({
+                                        firstId: rightId,
+                                        secondId: leftId
+                                    });*/
+
                                     drawLine(left, right, false); // and draw
                                     $scope.resetConnecting(); // and clear state
                                 });
@@ -273,6 +279,11 @@
                                         firstId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
                                         secondId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
                                     });
+
+                                /*addLink({
+                                        secondId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
+                                        firstId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
+                                    });*/
                             });
 
                             if(connections.length) $scope.redrawLines();
@@ -331,21 +342,30 @@
                         while (l-- > 0) {
                             link = links[l];
                             if ($scope.shouldShowLink(link)) {
-                                drawLine(getNode(link.firstId, 'left'), getNode(link.secondId, 'right'), true);
+
+
+                                drawLine(treeVisible(link.firstId, '_left') ? getNode(link.firstId, 'left') : getNode(link.secondId, 'left'),
+                                         treeVisible(link.secondId, '_right') ? getNode(link.secondId, 'right') : getNode(link.firstId, 'right'), true);
                             }
                         }
                     })
                 };
 
                 /**
+                 * Indicates if a tree is visible
+                 */
+                function treeVisible(id, tabset) {
+                    return $scope[tabset + 'Tree'] == id.split(':')[0];
+                }
+
+                /**
                  * Find if the link nodes belong two visible trees
                  */
                 $scope.shouldShowLink = function (link) {
-                    function treeVisible(id, tabset) {
-                        return $scope[tabset + 'Tree'] == id.split(':')[0];
-                    }
 
-                    return link && treeVisible(link.firstId, '_left') && treeVisible(link.secondId, '_right');
+                    return link &&
+                        ((treeVisible(link.firstId, '_left') && treeVisible(link.secondId, '_right')) ||
+                         (treeVisible(link.firstId, '_right') && treeVisible(link.secondId, '_left')));
 
 
                 };
