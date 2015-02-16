@@ -35,7 +35,7 @@
 /* Allows context-menu position be setted relative to the page, being over everithing else */
 .context-menu{
     display: block;
-    position: fixed;
+    position: absolute;
     z-index: 999;    
 }
 
@@ -72,4 +72,8 @@
 
 .context-menu.open{
     display: block;
+}
+
+.bottom-margin {
+    margin-bottom: 10px;
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +7,12 @@ using Dapper;
 using TreeServer.Models.Tree;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using TreeServer.Misc;
 
 namespace TreeServer.Models.Terms
 {
     /// <summary>
-    /// Gives access to the XMLFile table
+    /// Maps and gives access to the XMLFile table
     /// </summary>
     public class XMLFile : DatabaseTable
     {
@@ -78,7 +79,8 @@ namespace TreeServer.Models.Terms
         public Tree<Term> getXMLAsTree()
         {
             // we get the terms and make them nodes   
-            var terms = Terms.Select(t => new Tree<Term>.NodeClass{
+            var terms = Terms.Select(t => new Tree<Term>.NodeClass
+            {
                 id = t.Term_Id.ToString(),
                 title = t.Term_Title,
                 data = t
@@ -86,28 +88,41 @@ namespace TreeServer.Models.Terms
 
             // This diccionary is necesary to have better performance and low wait time. We need to get randomly nodes, so a Sorted Dictionary is the best option
             var FastAccessTerms = new SortedDictionary<int, Tree<Term>.NodeClass>();
+
+            // Dictionary containing all the added terms
+            var TermsAlreadyThere = new Misc.CheckList<int>();
+
             // Inserting the terms in the Dictionary
             foreach (var term in terms)
             {
                 FastAccessTerms[term.data.Term_Id] = term;
+
             }
 
             // We create the tree with the info form the node
-            var tree = new Tree<Term>(XmlFile_Id.ToString(), XmlFile_Name);
+            var tree = new Tree<Term>("", XmlFile_Name);
 
             // We take the parentless nodes and asume they are in the root
             foreach (var term in terms.Where(t => t.data.ParentId == 0))
             {
-                tree.Root.addChild(term);
+                if (!TermsAlreadyThere[term.data.Term_Id])
+                {
+                    tree.Root.addChild(term);
+                    TermsAlreadyThere[term.data.Term_Id] = true;
+                }
             }
 
             // The other nodes are apended to their parents
             foreach (var term in terms.Where(t => t.data.ParentId != 0))
             {
-                // Using the Dictionary for the random access
-                FastAccessTerms[term.data.ParentId].addChild(term);
+                if (!TermsAlreadyThere[term.data.Term_Id])
+                {
+                    // Using the Dictionary for the random access
+                    FastAccessTerms[term.data.ParentId].addChild(term);
+                    TermsAlreadyThere[term.data.Term_Id] = true;
+                }
             }
-            
+
             return tree;
         }
     }
