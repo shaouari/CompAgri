@@ -2,70 +2,68 @@
  */
 (function () {
     'use strict';
-
-    // test data
-    var data = [
-        {
-            "id": 1,
-            "title": "node1",
-            "nodes": [
-                {
-                    "id": 11,
-                    "title": "node1.1",
-                    "nodes": [
-                        {
-                            "id": 111,
-                            "title": "node1.1.1",
-                            "nodes": []
-                  }
-                ]
-            },
-                {
-                    "id": 12,
-                    "title": "node1.2",
-                    "nodes": []
-            }
-          ]
-      },
-        {
-            "id": 2,
-            "title": "node2",
-            "nodes": [
-                {
-                    "id": 21,
-                    "title": "node2.1",
-                    "nodes": []
-            },
-                {
-                    "id": 22,
-                    "title": "node2.2",
-                    "nodes": []
-            }
-          ]
-      },
-        {
-            "id": 3,
-            "title": "node3",
-            "nodes": [
-                {
-                    "id": 31,
-                    "title": "node3.1",
-                    "nodes": []
-            }
-          ]
-      },
-        {
-            "id": 4,
-            "title": "node4",
-            "nodes": [
-                {
-                    "id": 41,
-                    "title": "node4.1",
-                    "nodes": []
-            }
-          ]
-      }
-    ];
+//
+//        // test data
+//    var data = [
+//        {
+//            "id": 1,
+//            "title": "node1",
+//            "nodes": [
+//                {
+//                    "id": 11,
+//                    "title": "node1.1",
+//                    "nodes": [
+//                        {
+//                            "id": 111,
+//                            "title": "node1.1.1",
+//                            "nodes": []
+//                        }
+//                    ]
+//                }, {
+//                    "id": 12,
+//                    "title": "node1.2",
+//                    "nodes": []
+//                }
+//            ]
+//        },
+//        {
+//            "id": 2,
+//            "title": "node2",
+//            "nodes": [
+//                {
+//                    "id": 21,
+//                    "title": "node2.1",
+//                    "nodes": []
+//                }, {
+//                    "id": 22,
+//                    "title": "node2.2",
+//                    "nodes": []
+//                }
+//            ]
+//        },
+//        {
+//            "id": 3,
+//            "title": "node3",
+//            "nodes": [
+//                {
+//                    "id": 31,
+//                    "title": "node3.1",
+//                    "nodes": []
+//                }
+//            ]
+//        },
+//        {
+//            "id": 4,
+//            "title": "node4",
+//            "nodes": [
+//                {
+//                    "id": 41,
+//                    "title": "node4.1",
+//                    "nodes": []
+//        }
+//      ]
+//  }
+//];
 
     var links = []; // links cache
 
@@ -89,7 +87,8 @@
                         return list.map(function (item) {
                             return {
                                 id: item.XmlFile_Id,
-                                name: item.XmlFile_Name
+                                name: item.XmlFile_Name,
+                                list: []
                             };
                         });
                     });
@@ -139,11 +138,20 @@
                             return res.data;
                         }).then(resolve, reject);
                     });
+                },
+
+                getConnectionsForTerms: function getConnectionsForTerms(termIds) {
+                    var self = this;
+                    return $q(function (resolve, reject) {
+                        $http.get(self.apiLocation + "Connections/ForTerms?termIds=" + termIds.join(',')).then(function (res) {
+                            return res.data;
+                        }).then(resolve, reject);
+                    });
                 }
 
             };
         })
-        .controller('MainCtrl', function ($scope, $modal, treeServer) {
+        .controller('MainCtrl', function ($scope, $modal, treeServer, $q) {
 
             $scope.tabsets = [{
                 id: 'left'
@@ -154,176 +162,251 @@
             treeServer.getTrees().then(function (trees) {
 
                 $scope.trees = trees;
-
-                treeServer.getTree($scope.trees[0].id).then(function (list) {
-                    $scope.trees[0].list = list;
-                }, console.log);
+            }).then(function () {
+                return treeServer.getTree($scope.trees[0].id);
+            }).then(function (tree) {
+                $scope.trees[0].list = [tree];
 
                 $scope._leftTree = $scope._rightTree = $scope.trees[0].id;
 
-            });
+                $scope.newSubItem = function (scope) {
+                    var nodeData = scope.$modelValue;
+                    nodeData.items.push({
+                        id: nodeData.id * 10 + nodeData.items.length + 1,
+                        title: nodeData.title + '.' + (nodeData.items.length + 1),
+                        items: []
+                    });
+                    $scope.redrawLines();
+                };
 
-            $scope.newSubItem = function (scope) {
-                var nodeData = scope.$modelValue;
-                nodeData.nodes.push({
-                    id: nodeData.id * 10 + nodeData.nodes.length + 1,
-                    title: nodeData.title + '.' + (nodeData.nodes.length + 1),
-                    nodes: []
-                });
-                $scope.redrawLines();
-            };
+                /**
+                 * Connect nodes from different tabsets
+                 */
+                $scope.connect = function (scope) {
+                    var $el = scope.$element;
+                    $el.toggleClass('selected');
 
-            /**
-             * Connect nodes from different tabsets
-             */
-            $scope.connect = function (scope) {
-                var $el = scope.$element;
-                $el.toggleClass('selected');
+                    var parentId = $scope.getTabsetId($el);
+                    $scope[parentId] = $el.hasClass('selected') ? $el : null; // remember the selected element with respect to the tree containing the element
 
-                var parentId = $scope.getTabsetId($el);
-                $scope[parentId] = $el.hasClass('selected') ? $el : null; // remember the selected element with respect to the tree containing the element
+                    var left = $scope['_left'],
+                        right = $scope['_right'];
 
-                var left = $scope['_left'],
-                    right = $scope['_right'];
+                    if (left && right) { // if there are selected items in both trees
+                        var leftTree = getTree(left),
+                            rightTree = getTree(right),
+                            leftId = id(leftTree, left),
+                            rightId = id(rightTree, right);
 
-                if (left && right) { // if there are selected items in both trees
-                    var leftTree = getTree(left),
-                        rightTree = getTree(right),
-                        leftId = id(leftTree, left),
-                        rightId = id(rightTree, right);
+                        if (!findLink(leftId, rightId)) { // and there is no link between the items
 
-                    if (!findLink(leftId, rightId)) { // and there is no link between the items
-
-                        var modalInstance = $modal.open({
-                            templateUrl: 'templates/connection.modal.html',
-                            controller: 'ConnectionModalCtrl',
-                            scope: $scope,
-                            resolve: {
-                                data: function () {
-                                    return {
-                                        term1: left,
-                                        term2: right,
-                                        leftId: leftId,
-                                        rightId: rightId
-                                    };
+                            var modalInstance = $modal.open({
+                                templateUrl: 'templates/connection.modal.html',
+                                controller: 'ConnectionModalCtrl',
+                                scope: $scope,
+                                resolve: {
+                                    data: function () {
+                                        return {
+                                            term1: left,
+                                            term2: right,
+                                            leftId: leftId,
+                                            rightId: rightId
+                                        };
+                                    }
                                 }
-                            }
-                        });
-
-                        modalInstance.result.then(function (data) {
-
-                            data.Connection_Left_Term_Id = left.scope().$nodeScope.$modelValue.id;
-                            data.Connection_Right_Term_Id = right.scope().$nodeScope.$modelValue.id;
-
-                            treeServer.addConnection(data).then(function () {
-                                addLink({
-                                    first: left,
-                                    firstId: leftId,
-                                    second: right,
-                                    secondId: rightId
-                                });
-                                drawLine(left, right, false); // and draw
-                                $scope.resetConnecting(); // and clear state
                             });
-                        });
-                    }
-                }
-                return true;
-            };
 
-            /**
-             * Clear the state if connection of nodes is aborted
-             */
-            $scope.resetConnecting = function () {
-                var left = $scope['_left'];
-                var right = $scope['_right'];
-                left && left.toggleClass('selected');
-                right && right.toggleClass('selected');
-                $scope['_left'] = null;
-                $scope['_right'] = null;
-            };
+                            modalInstance.result.then(function (data) {
 
-            /**
-             * Options of the tree which are via ui-tree attribute
-             * @type {{dragStop: Function, removed: Function}}
-             */
-            $scope.treeOptions = {
-                dragStop: function () {
-                    $scope.redrawLines();
-                    $scope.resetConnecting();
-                },
-                removed: function (scope) {
-                    var $el = scope.$element.children('.angular-ui-tree-handle:first'),
-                        $tree = getTree($el);
-                    removeLinks(id($tree, $el));
-                    $scope.redrawLines();
-                }
-            };
+                                data.Connection_Left_Term_Id = left.scope().$nodeScope.$modelValue.id;
+                                data.Connection_Right_Term_Id = right.scope().$nodeScope.$modelValue.id;
 
-            /**
-             * Redraw lines after toggling visibility of child nodes
-             */
-            $scope.afterToggle = function () {
-                $scope.redrawLines();
-            };
+                                treeServer.addConnection(data).then(function () {
+                                    addLink({
+                                        first: left,
+                                        firstId: leftId,
+                                        second: right,
+                                        secondId: rightId
+                                    });
 
-            /**
-             * Remove the lines and show only relative ones
-             */
-            $scope.redrawLines = function () {
-                setTimeout(function () { // async to let all the dom changes to take effect
-                    $('.line').remove();
-                    $('.circle').remove();
-                    var l = links.length,
-                        link;
-                    while (l-- > 0) {
-                        link = links[l];
-                        if ($scope.shouldShowLink(link)) {
-                            drawLine(getNode(link.firstId, 'left'), getNode(link.secondId, 'right'), true);
+                                    /*addLink({
+                                        firstId: rightId,
+                                        secondId: leftId
+                                    });*/
+
+                                    drawLine(left, right, false); // and draw
+                                    $scope.resetConnecting(); // and clear state
+                                });
+                            });
                         }
                     }
-                })
-            };
+                    return true;
+                };
 
-            /**
-             * Find if the link nodes belong two visible trees
-             */
-            $scope.shouldShowLink = function (link) {
-                return link && treeVisible(link.firstId, '_left') && treeVisible(link.secondId, '_right');
+                /**
+                 * Recursive function which gets the conectios form the nodes
+                 */
+                function getConnectionsForNodes (nodes, tree) {
+                    if (nodes.length){
+                        return $scope.downloadConnectionsForNodes(nodes.slice(0,5), tree).then(function () {
+                            return getConnectionsForNodes(nodes.slice(5), tree);
+                        });
+                    }
 
+                }
+
+                function getConnectionForNodesChildren (nodes) {
+                    return getConnectionsForNodes(nodes.reduce(function (beg, itm) {
+                        return beg.concat(itm.items);
+                    }, []));
+                }
+
+                /**
+                 * Download the connections for the tree
+                 */
+                $scope.downloadConnections = function downloadConnections(tree) {
+                    return getConnectionsForNodes(tree.list, tree);
+                };
+
+                /**
+                 * Download the connections for the nodes and it childs
+                 */
+                $scope.downloadConnectionsForNodes = function downloadConnectionsForNodes(nodes, tree) {
+                    return $q(function (resolve, reject) {
+                        treeServer.getConnectionsForTerms(nodes.map(function(item) { return item.id })).then(function (connections) {
+                            connections.forEach(function (item) {
+                                addLink({
+                                        firstId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
+                                        secondId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
+                                    });
+
+                                /*addLink({
+                                        secondId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
+                                        firstId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
+                                    });*/
+                            });
+
+                            if(connections.length) $scope.redrawLines();
+
+                        }).then(function () {
+                            return getConnectionForNodesChildren(nodes);
+                        }).then(resolve, reject);
+                    });
+                };
+
+                /**
+                 * Clear the state if connection of nodes is aborted
+                 */
+                $scope.resetConnecting = function () {
+                    var left = $scope['_left'];
+                    var right = $scope['_right'];
+                    left && left.toggleClass('selected');
+                    right && right.toggleClass('selected');
+                    $scope['_left'] = null;
+                    $scope['_right'] = null;
+                };
+
+                /**
+                 * Options of the tree which are via ui-tree attribute
+                 * @type {{dragStop: Function, removed: Function}}
+                 */
+                $scope.treeOptions = {
+                    dragStop: function () {
+                        $scope.redrawLines();
+                        $scope.resetConnecting();
+                    },
+                    removed: function (scope) {
+                        var $el = scope.$element.children('.angular-ui-tree-handle:first'),
+                            $tree = getTree($el);
+                        removeLinks(id($tree, $el));
+                        $scope.redrawLines();
+                    }
+                };
+
+                /**
+                 * Redraw lines after toggling visibility of child nodes
+                 */
+                $scope.afterToggle = function () {
+                    $scope.redrawLines();
+                };
+
+                /**
+                 * Remove the lines and show only relative ones
+                 */
+                $scope.redrawLines = function () {
+                    setTimeout(function () { // async to let all the dom changes to take effect
+                        $('.line').remove();
+                        $('.circle').remove();
+                        var l = links.length,
+                            link;
+                        while (l-- > 0) {
+                            link = links[l];
+                            if ($scope.shouldShowLink(link)) {
+
+
+                                drawLine(treeVisible(link.firstId, '_left') ? getNode(link.firstId, 'left') : getNode(link.secondId, 'left'),
+                                         treeVisible(link.secondId, '_right') ? getNode(link.secondId, 'right') : getNode(link.firstId, 'right'), true);
+                            }
+                        }
+                    })
+                };
+
+                /**
+                 * Indicates if a tree is visible
+                 */
                 function treeVisible(id, tabset) {
                     return $scope[tabset + 'Tree'] == id.split(':')[0];
                 }
-            };
 
-            /**
-             * Change active tab/tree
-             * @param index tab index
-             * @param tabsetId
-             */
-            $scope.select = function (index, tabsetId) {
-                $scope['_' + tabsetId + 'Tree'] = this.tree.id;
+                /**
+                 * Find if the link nodes belong two visible trees
+                 */
+                $scope.shouldShowLink = function (link) {
 
-                if (!this.tree.list || !this.tree.list.length) {
-                    var tree = this.tree;
-                    treeServer.getTree(tree.id).then(function (list) {
-                        tree.list = list;
-                    }, console.log);
-                }
+                    return link &&
+                        ((treeVisible(link.firstId, '_left') && treeVisible(link.secondId, '_right')) ||
+                         (treeVisible(link.firstId, '_right') && treeVisible(link.secondId, '_left')));
 
-                $scope.redrawLines();
-            };
 
-            $scope.getTabsetId = function ($el) {
-                return '_' + $el.parents('.tabset').attr('id').replace('_tabset', '')
-            };
+                };
 
-            /**
-             * Redraw on resize
-             */
-            $(window).on('resize', function () {
-                $scope.redrawLines();
-            });
+                /**
+                 * Change active tab/tree
+                 * @param index tab index
+                 * @param tabsetId
+                 */
+                $scope.select = function (index, tabsetId) {
+                    $scope['_' + tabsetId + 'Tree'] = this.tree.id;
+
+                    if (!this.tree.list || !this.tree.list.length) {
+                        var tree = this.tree;
+                        treeServer.getTree(tree.id).then(function (treeInfo) {
+                            tree.list = [treeInfo];
+
+                            $scope.downloadConnections(tree).then(function () {
+                                $scope.redrawLines();
+                            });
+
+                            if ($scope.$$phase !== "$digest") $scope.$digest();
+                        }, console.log);
+                    } else {
+                        $scope.redrawLines();
+                    }
+                };
+
+                $scope.getTabsetId = function ($el) {
+                    return '_' + $el.parents('.tabset').attr('id').replace('_tabset', '');
+                };
+
+                /**
+                 * Redraw on resize
+                 */
+                $(window).on('resize', function () {
+                    $scope.redrawLines();
+                });
+
+                $scope.downloadConnections($scope.trees[0]);
+            }, console.log);
 
         })
         .controller('ConnectionModalCtrl', function ($scope, $modalInstance, treeServer, data) {

@@ -47,16 +47,19 @@ namespace CompAgri.Controllers
         [HttpGet]
         public IEnumerable<Models.Terms.Connection> getForTerms(string termIds)
         {
-            return Models.Terms.Connection.GetForTerms(termIds.Split(',').Select(t => int.Parse(t)));
+            if (!String.IsNullOrWhiteSpace(termIds))
+                return Models.Terms.Connection.GetForTerms(termIds.Split(',').Select(t => int.Parse(t)));
+            else
+                return new Models.Terms.Connection[] { };
         }
 
         [Route("Add")]
         [HttpPost]
         public int AddConnection([FromBody] Models.Terms.Connection connection)
         {
-            //// This works, uncomment it when the real tree is used
-            //connection.Save();
-            //return connection.Connection_Id;
+            // This works, uncomment it when the real tree is used
+            connection.Save();
+            return connection.Connection_Id;
             return 0;
         }
     }
