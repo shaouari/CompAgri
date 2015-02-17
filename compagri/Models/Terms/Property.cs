@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +7,9 @@ using System.Data.SqlClient;
 
 namespace CompAgri.Models.Terms
 {
-    class Property: DatabaseTable
+    public class Property: DatabaseTable
     {
-        public static IEnumerable<string> AllowedProperties = new String[]{"ES", "SO", "UF", "DF", "DS"};
+        public static IEnumerable<string> AllowedProperties = new String[] { "ES", "SO", "UF", "DF", "DS" };
 
         public int Property_Id { get; set; }
 
@@ -43,9 +43,9 @@ namespace CompAgri.Models.Terms
             else
                 // Exist, Updating
                 db.Execute("UPDATE Property SET Property_Term_Id = @Property_Term_Id, Property_Key = @Property_Key, Property_Value = @Property_Value WHERE Property_Id = @Property_Id", this);
-            
 
-            // Method Chain 
+
+            // Method Chain
             return this;
         }
 
