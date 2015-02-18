@@ -1,27 +1,75 @@
-﻿using System;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
 namespace TreeServer.Controllers
 {
     [RoutePrefix("api/tree")]
     public class TreeController : ApiController
     {
         [Route("addNode")]
-        public int AddNode(int XmlFileId, String name, int parentId)
+        public int AddNode(int XmlFileId, String name, int parentId, [FromBody] JObject param)
         {
-            Debug.WriteLine("AddNode(XmlFileId: {0}, name: {1}, parentId: {2})", XmlFileId, name, parentId);
+            //Debug.WriteLine("AddNode(XmlFileId: {0}, name: {1}, parentId: {2})", XmlFileId, name, parentId);
+            var term = new Models.Terms.Term
+            {
+                Term_XmlFile_id = XmlFileId,
+                Term_Title = name
+            };
 
-            var newId = new Random().Next(10000000);
+            term.Save();
 
-            Debug.WriteLine("Returns {0}", newId);
+            if (parentId != 0)
+            {
+                var relation = new Models.Terms.Relation()
+                {
+                    Relation_Parent_Term_Id = parentId,
+                    Relation_Child_Term_Id = term.Term_Id
+                };
 
-            return newId;
+                relation.Save();
+            }
 
+            if (param != null)
+            {
+                var propList = new List<Models.Terms.Property>();
+
+                foreach (string prop in Models.Terms.Property.AllowedProperties)
+                {
+                    if (param[prop] != null)
+                    {
+                        propList.Add(new Models.Terms.Property
+                        {
+                            Property_Term_Id = term.Term_Id,
+                            Property_Key = prop,
+                            Property_Value = param[prop].ToString()
+                        });
+                    }
+                }
+
+                Models.Terms.Property.SaveMultiple(propList);
+
+            }
+
+
+            return term.Term_Id;
+
+        }
+
+        [Route("termDetails")]
+        [HttpGet]
+        public Models.TermDetails termDetails(int termId)
+        {
+            var term = Models.Terms.Term.Find(termId);
+
+            if (term == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            return new Models.TermDetails(term);
         }
 
         [Route("deleteNode")]

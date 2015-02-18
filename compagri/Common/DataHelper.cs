@@ -1,4 +1,5 @@
-﻿using System;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,30 +10,50 @@ namespace CompAgri.Common
 {
     public class DataHelper
     {
-        internal static int AddNode(int xmlFileId, String name, int parentId)
+        internal static int AddNode(int xmlFileId, String name, int parentId, JObject param)
         {
-            try
+            var term = new Models.Terms.Term
             {
-                using (CompAgriConnection ctx = new CompAgriConnection())
+                Term_XmlFile_id = xmlFileId,
+                Term_Title = name
+            };
+
+            term.Save();
+
+            if (parentId != 0)
+            {
+                var relation = new Models.Terms.Relation()
                 {
-                    var newTerm = new Term()
-                    {
-                        Term_XmlFile_Id = xmlFileId,
-                        Term_Title = name
-                    };
+                    Relation_Parent_Term_Id = parentId,
+                    Relation_Child_Term_Id = term.Term_Id
+                };
 
-                    newTerm.Relation1.Add(new Relation { Relation_Parent_Term_Id = parentId, Relation_Child_Term_Id = newTerm.Term_Id });
-
-                    ctx.Terms.Add(newTerm);
-                    ctx.SaveChanges();
-                    return newTerm.Term_Id;
-                }
+                relation.Save();
             }
-            catch (Exception)
+
+            if (param != null)
             {
-                // Do Nothing !
+                var propList = new List<Models.Terms.Property>();
+
+                foreach (string prop in Models.Terms.Property.AllowedProperties)
+                {
+                    if (param[prop] != null)
+                    {
+                        propList.Add(new Models.Terms.Property
+                        {
+                            Property_Term_Id = term.Term_Id,
+                            Property_Key = prop,
+                            Property_Value = param[prop].ToString()
+                        });
+                    }
+                }
+
+                Models.Terms.Property.SaveMultiple(propList);
+
             }
-            return -1;
+
+
+            return term.Term_Id;
         }
 
         internal static void MoveNode(int nodeId, int oldParentId, int newParentId)
@@ -201,5 +222,28 @@ namespace CompAgri.Common
             }
         }
 
+
+        internal static Models.Tree.Tree<Models.Terms.Term>.RootClass getTree(int xmlFileId)
+        {
+            // Get the XMLFile
+            var XmlFile = Models.Terms.XMLFile.Find(xmlFileId);
+
+            // If file not found so we return not found
+            if (XmlFile == null)
+                return null;
+
+            // We Ask the tree and return the root of the tree
+            return XmlFile.getXMLAsTree().Root;
+        }
+
+        internal static Models.TermDetails TermDetails(int termId)
+        {
+            var term = Models.Terms.Term.Find(termId);
+
+            if (term == null)
+                return null;
+
+            return new Models.TermDetails(term);
+        }
     }
 }

@@ -5,11 +5,11 @@ using System.Text;
 using Dapper;
 using System.Data.SqlClient;
 
-namespace CompAgri.Models.Terms
+namespace TreeServer.Models.Terms
 {
     public class Property: DatabaseTable
     {
-        public static IEnumerable<string> AllowedProperties = new String[] { "ES", "SO", "UF", "DF", "DS" };
+        public static IEnumerable<string> AllowedProperties = new String[]{"ES", "SO", "UF", "DF", "DS"};
 
         public int Property_Id { get; set; }
 

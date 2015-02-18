@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +33,7 @@ namespace TreeServer.Models.Terms
         }
 
         /// <summary>
-        /// Makes a quiery which returns relations
+        /// Makes a query which returns relations
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="paramether"></param>

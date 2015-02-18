@@ -132,6 +132,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Misc\CheckList.cs" />
+    <Compile Include="Models\TermDetails.cs" />
     <Compile Include="Models\Terms\Connection.cs" />
     <Compile Include="Models\Terms\DatabaseTable.cs" />
     <Compile Include="Models\Terms\Property.cs" />

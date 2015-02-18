@@ -17,7 +17,7 @@ namespace CompAgri.Models.Terms
         public int Term_Id { get; set; }
         public string Term_Title { get; set; }
         public int Term_XmlFile_id { get; set; }
-        
+
         /// <summary>
         /// Get or sets the XMLFile it belongs to
         /// </summary>
@@ -68,6 +68,35 @@ namespace CompAgri.Models.Terms
         /// </summary>
         [JsonIgnore]
         [XmlIgnore]
+        internal IEnumerable<Term> Parents
+        {
+            get
+            {
+                // TODO: Optimize this
+                return Relation.Query("Select * from Relation WHERE Relation_Child_Term_Id = @Term_Id and (Relation_IsDelete = 0 or Relation_IsDelete is null)", this).Select(e => e.Parent_Term);
+            }
+        }
+
+        // Only supprts reading
+        /// <summary>
+        /// Get only property which returns all the childrens id
+        /// </summary>
+        [JsonIgnore]
+        [XmlIgnore]
+        internal IEnumerable<int> ParentsIds
+        {
+            get
+            {
+                return Relation.Query("Select Relation_Parent_Term_Id from Relation WHERE Relation_Child_Term_Id = @Term_Id and (Relation_IsDelete = 0 or Relation_IsDelete is null)", this).Select(e => e.Relation_Parent_Term_Id);
+            }
+        }
+
+        // Only supprts reading
+        /// <summary>
+        /// Read-only property wich returns all the children nodes
+        /// </summary>
+        [JsonIgnore]
+        [XmlIgnore]
         internal IEnumerable<Term> Childen
         {
             get
@@ -83,7 +112,7 @@ namespace CompAgri.Models.Terms
         /// </summary>
         [JsonIgnore]
         [XmlIgnore]
-        internal IEnumerable<int> ChildenId
+        internal IEnumerable<int> ChildenIds
         {
             get
             {
@@ -130,6 +159,27 @@ namespace CompAgri.Models.Terms
             using (var db = Database)
             {
                 return db.Query<Connection>("SELECT c.*, lt.Term_XmlFile_id as Connection_Left_Tree_Id, rt.Term_XmlFile_id as Connection_Right_Tree_Id FROM [Connection] as c LEFT JOIN Term as lt on c.Connection_Left_Term_Id = lt.Term_Id LEFT JOIN Term as rt on c.Connection_Right_Term_Id = rt.Term_Id WHERE c.Connection_Left_Term_Id = @Term_Id OR c.Connection_Right_Term_Id = @Term_Id", this);
+            }
+        }
+
+        [JsonIgnore]
+        [XmlIgnore]
+        internal IEnumerable<Property> Properties
+        {
+            get
+            {
+                using (var db = Database)
+                {
+                    return db.Query<Property>("SELECT * FROM Property WHERE Property_Term_Id = @Term_Id", this);
+                }
+            }
+        }
+
+        internal IEnumerable<Term> GetConnectedTerms()
+        {
+            using (var db = Database)
+            {
+                return db.Query<Term>("SELECT * FROM [Term] WHERE Term_Id IN (SELECT DISTINCT Connection_Right_Term_Id FROM [Connection] WHERE Connection_Left_Term_Id = @Term_Id UNION SELECT DISTINCT Connection_Left_Term_Id FROM [Connection] WHERE Connection_Right_Term_Id = @Term_Id)", this);
             }
         }
     }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Net.Http;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace CompAgri.Controllers
 {
@@ -13,24 +14,21 @@ namespace CompAgri.Controllers
         [HttpGet]
         public HttpResponseMessage GetTree(int xmlFileId)
         {
-            // Get the XMLFile
-            var XmlFile = Models.Terms.XMLFile.Find(xmlFileId);
+            var res = Bll.CompAgriBll.GetTree(xmlFileId);
 
-            // If file not found so we return not found
-            if (XmlFile == null)
+            if (res == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            // We Ask the tree and return the root of the tree
-            return Request.CreateResponse(HttpStatusCode.OK, XmlFile.getXMLAsTree().Root);
+            return Request.CreateResponse(HttpStatusCode.OK, res);
         }
     }
 
     public class CompAgriAddNodeController : ApiController
     {
         [HttpPost]
-        public HttpResponseMessage AddNode(int xmlFileId, String name, int parentId)
+        public HttpResponseMessage AddNode(int xmlFileId, String name, int parentId, [FromBody] JObject param)
         {
-            int res = Bll.CompAgriBll.AddNode(xmlFileId, name, parentId);
+            int res = Bll.CompAgriBll.AddNode(xmlFileId, name, parentId, param);
             return Request.CreateResponse<int>(HttpStatusCode.OK, res);
         }
     }
@@ -54,6 +52,16 @@ namespace CompAgri.Controllers
             int res = 0;
             Bll.CompAgriBll.DeleteNode(nodeId, parentId);
             return Request.CreateResponse<int>(HttpStatusCode.OK, res);
+        }
+    }
+
+    public class CompAgriTermDetailsController : ApiController
+    {
+        [HttpGet]
+        public HttpResponseMessage TermDetails(int termId)
+        {
+            var res = Bll.CompAgriBll.TermDetails(termId);
+            return Request.CreateResponse(HttpStatusCode.OK, res);
         }
     }
 
