@@ -49,7 +49,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "tree-test-tabs", "http://lo
 		SlnRelativePath = "tree-test-tabs\"
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "node-tree-implementation(1)", "http://localhost:2491", "{C8F9850B-1E49-486C-9C11-C4169D54B456}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "node-tree-implementation", "http://localhost:2491", "{C8F9850B-1E49-486C-9C11-C4169D54B456}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
@@ -71,6 +71,28 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "node-tree-implementation(1)
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeServer", "TreeServer\TreeServer.csproj", "{6E6E6011-C96E-4A02-8048-6A006E3D0208}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "terms-merged", "http://localhost:50991", "{5035B510-9289-42BB-8F3E-351D9C708BA4}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50991"
+		Debug.AspNetCompiler.PhysicalPath = "terms-merged\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50991\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50991"
+		Release.AspNetCompiler.PhysicalPath = "terms-merged\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50991\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "terms-merged\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,6 +124,10 @@ Global
 		{6E6E6011-C96E-4A02-8048-6A006E3D0208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E6E6011-C96E-4A02-8048-6A006E3D0208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E6E6011-C96E-4A02-8048-6A006E3D0208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5035B510-9289-42BB-8F3E-351D9C708BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5035B510-9289-42BB-8F3E-351D9C708BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5035B510-9289-42BB-8F3E-351D9C708BA4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{5035B510-9289-42BB-8F3E-351D9C708BA4}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

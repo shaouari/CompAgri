@@ -22,7 +22,7 @@ namespace CompAgri.Models
 
         public Terms.Term term { get; set; }
 
-        public IEnumerable<Terms.Property> properties { get; set; }
+        public IEnumerable<Terms.T_Property> properties { get; set; }
 
         public IEnumerable<Terms.Term> children { get; set; }
 

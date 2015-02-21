@@ -164,13 +164,13 @@ namespace CompAgri.Models.Terms
 
         [JsonIgnore]
         [XmlIgnore]
-        internal IEnumerable<Property> Properties
+        internal IEnumerable<T_Property> Properties
         {
             get
             {
                 using (var db = Database)
                 {
-                    return db.Query<Property>("SELECT * FROM Property WHERE Property_Term_Id = @Term_Id", this);
+                    return db.Query<T_Property>("SELECT * FROM Property WHERE Property_Term_Id = @Term_Id", this);
                 }
             }
         }
