@@ -1,0 +1,9 @@
+<div ui-tree-handle data-id="{{node.id}}" ng-click="click()" context>
+    <a class="btn btn-success btn-xs" data-nodrag="" ng-click="toggle(this); afterToggle();"><span class="glyphicon glyphicon-chevron-down" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
+    {{node.title}}
+    <a class="pull-right btn btn-primary btn-xs" data-nodrag="" ng-click="connect(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-transfer"></span></a>
+</div>
+<ol ui-tree-nodes="treeOptions" ng-model="node.items" ng-class="{hidden: collapsed}">
+    <li ng-repeat="node in node.items" ui-tree-node ng-include="'templates/nodes_renderer.html'">
+    </li>
+</ol>

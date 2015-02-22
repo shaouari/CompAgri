@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h3 class="modal-title">Add Term</h3>
+</div>
+<div class="modal-body">
+
+    <form class="form-horizontal" ng-submit="$event.preventDefault()">
+        <div class="form-group" ng-class="errors('descriptor') && 'has-error'">
+            <label for="descriptor" class="col-sm-2 control-label">English Term</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" ng-model="descriptor" id="descriptor" placeholder="English Term">
+                <span class="help-block" ng-class="!errors('descriptor') && 'hidden'" ng-bind="errors.descriptor"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="es" class="col-sm-2 control-label">Hebrew Term</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="es" ng-model="es" placeholder="Hebrew Term">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="so" class="col-sm-2 control-label">Source of Term</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="so" ng-model="so" placeholder="Source of Term">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="uf" class="col-sm-2 control-label">Used For(synonym)</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="uf" ng-model="uf" placeholder="Used For(synonym)">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="df" class="col-sm-2 control-label">Definition</label>
+            <div class="col-sm-10">
+                <textarea type="text" class="form-control" id="df" ng-model="df"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ds" class="col-sm-2 control-label">Definition Source</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="ds" ng-model="ds" placeholder="Definition Source">
+            </div>
+        </div>
+    </form>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="continueAdding()"><i class="glyphicon glyphicon-ok"></i> Save</button>
+    <button class="btn btn-warning" ng-click="cancel()"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+</div>

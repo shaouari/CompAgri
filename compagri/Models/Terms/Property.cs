@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace CompAgri.Models.Terms
 {
-    public class Property: DatabaseTable
+    public class T_Property: DatabaseTable
     {
         public static IEnumerable<string> AllowedProperties = new String[] { "ES", "SO", "UF", "DF", "DS" };
 
@@ -19,11 +19,11 @@ namespace CompAgri.Models.Terms
 
         public string Property_Value { get; set; }
 
-        public static Property Find(int Property_Id)
+        public static T_Property Find(int Property_Id)
         {
             using (var db = Database)
             {
-                return db.Query<Property>("SELECT TOP(1) * FROM Property WHERE Property_Id = @Property_Id", new { Property_Id = Property_Id }).FirstOrDefault();
+                return db.Query<T_Property>("SELECT TOP(1) * FROM Property WHERE Property_Id = @Property_Id", new { Property_Id = Property_Id }).FirstOrDefault();
             }
         }
 
@@ -35,7 +35,7 @@ namespace CompAgri.Models.Terms
             }
         }
 
-        public Property Save(SqlConnection db)
+        public T_Property Save(SqlConnection db)
         {
             // Does not exist, inserting
             if (this.Property_Id == 0)
@@ -49,7 +49,7 @@ namespace CompAgri.Models.Terms
             return this;
         }
 
-        public Property Save()
+        public T_Property Save()
         {
             using (var db = Database)
             {
@@ -59,7 +59,7 @@ namespace CompAgri.Models.Terms
             return this;
         }
 
-        internal static void SaveMultiple(IEnumerable<Property> propList)
+        internal static void SaveMultiple(IEnumerable<T_Property> propList)
         {
             using (var db = Database)
             {

@@ -33,13 +33,13 @@ namespace CompAgri.Common
 
             if (param != null)
             {
-                var propList = new List<Models.Terms.Property>();
+                var propList = new List<Models.Terms.T_Property>();
 
-                foreach (string prop in Models.Terms.Property.AllowedProperties)
+                foreach (string prop in Models.Terms.T_Property.AllowedProperties)
                 {
                     if (param[prop] != null)
                     {
-                        propList.Add(new Models.Terms.Property
+                        propList.Add(new Models.Terms.T_Property
                         {
                             Property_Term_Id = term.Term_Id,
                             Property_Key = prop,
@@ -48,7 +48,7 @@ namespace CompAgri.Common
                     }
                 }
 
-                Models.Terms.Property.SaveMultiple(propList);
+                Models.Terms.T_Property.SaveMultiple(propList);
 
             }
 

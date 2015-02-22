@@ -46,7 +46,7 @@ namespace CompAgri.Controllers
 
     public class CompAgriDeleteNodeController : ApiController
     {
-        [HttpPost]
+        [HttpDelete]
         public HttpResponseMessage DeleteNode(int nodeId, int parentId)
         {
             int res = 0;
