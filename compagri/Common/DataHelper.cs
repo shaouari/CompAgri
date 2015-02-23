@@ -69,8 +69,17 @@ namespace CompAgri.Common
                     if (relation != null)
                     {
                         relation.Relation_Parent_Term_Id = newParentId;
-                        ctx.SaveChanges();
                     }
+                    else
+                    {
+                        relation = new Relation{
+                            Relation_Child_Term_Id = nodeId,
+                            Relation_Parent_Term_Id = newParentId
+                        };
+                        ctx.Relations.Add(relation);
+                    }
+
+                    ctx.SaveChanges();
                 }
             }
             catch (Exception)
