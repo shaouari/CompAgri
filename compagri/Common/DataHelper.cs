@@ -56,7 +56,7 @@ namespace CompAgri.Common
             return term.Term_Id;
         }
 
-        internal static void MoveNode(int nodeId, int oldParentId, int newParentId)
+        internal static void MoveNode(int nodeId, int? oldParentId, int? newParentId)
         {
             try
             {
