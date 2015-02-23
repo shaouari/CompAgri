@@ -36,7 +36,7 @@ namespace CompAgri.Controllers
     public class CompAgriMoveNodeController : ApiController
     {
         [HttpPost]
-        public HttpResponseMessage MoveNode(int nodeId, int oldParentId, int newParentId)
+        public HttpResponseMessage MoveNode(int nodeId, int? oldParentId, int? newParentId)
         {
             int res = 0;
             Bll.CompAgriBll.MoveNode(nodeId, oldParentId, newParentId);

@@ -14,7 +14,7 @@ namespace CompAgri.Bll
             return DataHelper.AddNode(xmlFileId, name, parentId, param);
         }
 
-        public static void MoveNode(int nodeId, int oldParentId, int newParentId)
+        public static void MoveNode(int nodeId, int? oldParentId, int? newParentId)
         {
             DataHelper.MoveNode(nodeId, oldParentId, newParentId);
         }
