@@ -455,9 +455,9 @@
                                             // dropped item id
                                             event.source.nodeScope.$modelValue.id,
                                             // previous parent id (if it had no parent sends 0)
-                                            event.source.nodesScope.$nodeScope ? event.source.nodesScope.$nodeScope.$modelValue.id : 0,
+                                            event.source.nodesScope.$nodeScope ? event.source.nodesScope.$nodeScope.$modelValue.id : null,
                                             // new parent id (if it has no new parent sends 0)
-                                            event.dest.nodesScope.$nodeScope ? event.dest.nodesScope.$nodeScope.$modelValue.id : 0);
+                                            event.dest.nodesScope.$nodeScope ? event.dest.nodesScope.$nodeScope.$modelValue.id : null);
                     }
                 };
 
