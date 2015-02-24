@@ -3,74 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompAgri.UI", "CompAgri.UI\CompAgri.UI.csproj", "{6F965986-0947-4937-B117-5AADDA1657FE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompAgri", "CompAgri\CompAgri.csproj", "{762ECCBE-09FC-402C-A45D-40B6E6AC369D}"
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "tree-test_lines", "http://localhost:1570", "{B97F2462-AA94-45B7-BB24-710B9DB37821}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "true"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_1570"
-		Debug.AspNetCompiler.PhysicalPath = "tree-test_lines\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1570\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_1570"
-		Release.AspNetCompiler.PhysicalPath = "tree-test_lines\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1570\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "tree-test_lines\"
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "tree-test-tabs", "http://localhost:2363", "{270B2335-7774-4E1A-9A00-84219F6A4962}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "true"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_2363"
-		Debug.AspNetCompiler.PhysicalPath = "tree-test-tabs\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_2363\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_2363"
-		Release.AspNetCompiler.PhysicalPath = "tree-test-tabs\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_2363\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "tree-test-tabs\"
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "node-tree-implementation", "http://localhost:2491", "{C8F9850B-1E49-486C-9C11-C4169D54B456}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "true"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_2491"
-		Debug.AspNetCompiler.PhysicalPath = "node-tree-implementation\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_2491\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_2491"
-		Release.AspNetCompiler.PhysicalPath = "node-tree-implementation\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_2491\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "node-tree-implementation\"
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeServer", "TreeServer\TreeServer.csproj", "{6E6E6011-C96E-4A02-8048-6A006E3D0208}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "terms-merged", "http://localhost:50991", "{5035B510-9289-42BB-8F3E-351D9C708BA4}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -100,30 +33,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F965986-0947-4937-B117-5AADDA1657FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F965986-0947-4937-B117-5AADDA1657FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F965986-0947-4937-B117-5AADDA1657FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F965986-0947-4937-B117-5AADDA1657FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{762ECCBE-09FC-402C-A45D-40B6E6AC369D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{762ECCBE-09FC-402C-A45D-40B6E6AC369D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{762ECCBE-09FC-402C-A45D-40B6E6AC369D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{762ECCBE-09FC-402C-A45D-40B6E6AC369D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B97F2462-AA94-45B7-BB24-710B9DB37821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B97F2462-AA94-45B7-BB24-710B9DB37821}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B97F2462-AA94-45B7-BB24-710B9DB37821}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{B97F2462-AA94-45B7-BB24-710B9DB37821}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{270B2335-7774-4E1A-9A00-84219F6A4962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{270B2335-7774-4E1A-9A00-84219F6A4962}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{270B2335-7774-4E1A-9A00-84219F6A4962}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{270B2335-7774-4E1A-9A00-84219F6A4962}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{C8F9850B-1E49-486C-9C11-C4169D54B456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8F9850B-1E49-486C-9C11-C4169D54B456}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8F9850B-1E49-486C-9C11-C4169D54B456}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8F9850B-1E49-486C-9C11-C4169D54B456}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{6E6E6011-C96E-4A02-8048-6A006E3D0208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E6E6011-C96E-4A02-8048-6A006E3D0208}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E6E6011-C96E-4A02-8048-6A006E3D0208}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E6E6011-C96E-4A02-8048-6A006E3D0208}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5035B510-9289-42BB-8F3E-351D9C708BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5035B510-9289-42BB-8F3E-351D9C708BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5035B510-9289-42BB-8F3E-351D9C708BA4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
