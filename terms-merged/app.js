@@ -200,6 +200,7 @@
 
             };
         })
+
         .controller('MainCtrl', function ($scope, $modal, treeServer, $q) {
 
             $scope.tabsets = [{
@@ -548,6 +549,7 @@
 
         })
 
+
         // Add node modal form  controller
         .controller("AddNodeModalCtrl", function ($scope, $modalInstance) {
 
@@ -580,9 +582,66 @@
                 $modalInstance.dismiss("cancel");
             };
         })
+        .controller("UploadController", function ($scope, $http, treeServer) {
+            $scope.alerts = [];
+            $scope.addAlert = function (type, msg) {
+                //Clear Alert Before adding another
+                $scope.alerts = [];
+                $scope.alerts.push({ type: type, msg: msg });
+            };
 
+            $scope.closeAlert = function (index) {
+                $scope.alerts.splice(index, 1);
+            };
 
-        // Add node modal form  controller
+            $scope.uploadFile = function () {
+                var file = $scope.myFile;
+                if (file) {
+                    var fd = new FormData();
+                    fd.append('file', file);
+                    $http.post(treeServer.apiLocation + 'Xml/Upload', fd, {
+                        transformRequest: angular.identity,
+                        headers: { 'Content-Type': undefined }
+                    })
+                        .success(function (data) {
+                            if (data) {
+                                $scope.myFile = "";
+                                $scope.addAlert("success", "File Uploaded Successfully");
+                            }
+                            else {
+                                $scope.myFile = "";
+                                $scope.addAlert("danger", "Unable to upload");
+                            }
+                        })
+                        .error(function () {
+                            $scope.addAlert("danger", "Error in uploading");
+                        });
+                }
+                else {
+                    $scope.addAlert("danger", "Please select file to upload");
+                }
+            };
+        })
+        .directive('fileModel', function ($parse) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    var model = $parse(attrs.fileModel);
+                    var modelSetter = model.assign;
+                    element.bind('change', function () {
+                        scope.$apply(function () {
+                            modelSetter(scope, element[0].files[0]);
+                        });
+                    });
+                    scope.$watch(attrs.fileModel, function (file) {
+                        if (!file) {
+                            element.val(file);
+                        }
+                    });
+                }
+            };
+        })
+
         .controller("TermDetailsModalCtrl", function ($scope, $modalInstance, treeServer, term) {
 
             $scope.term = term;
@@ -597,13 +656,13 @@
             };
 
             $scope.loadTermDetails = function loadTermDetails(termId) {
-                treeServer.getTermDetails(termId).then(function (details) {
-                    $scope.details = details;
-
-                    details.properties.forEach(function (item) {
-                        item.title = propertiesNames[item.Property_Key] || item.Property_Key;
-                    });
-                });
+                //treeServer.getTermDetails(termId).then(function (details) {
+                //    $scope.details = details;
+                //
+                //    details.properties.forEach(function (item) {
+                //        item.title = propertiesNames[item.Property_Key] || item.Property_Key;
+                //    });
+                //});
             };
 
             $scope.loadTermDetails(term.id);
@@ -676,7 +735,6 @@
                 }
             };
         })
-
         .controller('ConnectionModalCtrl', function ($scope, $modalInstance, treeServer, data) {
             $scope.pvalues = {
                 "Names": [],
