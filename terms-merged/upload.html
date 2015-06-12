@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body ng-app="demoApp" ng-controller="MainCtrl">
+<body ng-app="demoApp" ng-controller="UploadController">
     <div class="container">
         <!-- Static navbar -->
         <nav class="navbar navbar-default">
@@ -27,34 +27,23 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="./">Data Entry and Visualization</a></li>
-                        <li><a href="upload.html">XMLFile Upload</a></li>
+                        <li><a href="./">Data Entry and Visualization</a></li>
+                        <li class="active"><a href="upload.html">XMLFile Upload</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
         </nav>
 
-        <h1>Data Entry and Visualization</h1>
+        <h1>Upload Xml</h1>
 
-        <div ng-include="'tabset.html'" ng-repeat="tabset in tabsets"></div>
-    </div>
-
-        <script type="text/ng-template" id="tabset.html">
-            <tabset id="{{tabset.id}}_tabset" class="col-sm-6 tabset">
-                <tab ng-repeat="tree in trees" heading="{{tree.name}}" select="select($index, tabset.id)">
-                    <div ng-model="tree" ng-include="'tree.html'"></div>
-                </tab>
-            </tabset>
-        </script>
-
-        <script type="text/ng-template" id="tree.html">
-            <div ui-tree="treeOptions" data-drag-delay="100" id="tree-root_{{tree.id}}" data-type="tree-root">
-                <ol ui-tree-nodes ng-model="tree.list">
-                    <li ng-repeat="node in tree.list" ui-tree-node ng-include="'templates/nodes_renderer.html'"></li>
-                </ol>
+        <div class="container">
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+            <div class="row">
+                <input type="file" file-model="myFile"/>
+                <button ng-click="uploadFile()">upload</button>
             </div>
-        </script>
-
+        </div>
+    </div>
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="bower_components/angular/angular.js"></script>
