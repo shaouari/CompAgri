@@ -77,7 +77,14 @@
                         }).then(resolve, reject);
                     });
                 },
-
+                deleteConnection: function deleteConnection(id) {
+                    var self = this;
+                    return $q(function (resolve, reject) {
+                        $http.post(self.apiLocation + "Connections/Delete", id).then(function (res) {
+                            return res.data;
+                        }).then(resolve, reject);
+                    });
+                },
                 getConnectionsForTerms: function getConnectionsForTerms(termIds) {
                     var self = this;
                     return $q(function (resolve, reject) {
@@ -221,6 +228,29 @@
 
                 $scope._leftTree = $scope._rightTree = $scope.trees[0].id;
 
+                var deleteConnection = function (scope) {
+                    //deleting connexion by seting the isDelete column to true
+                    var connections = [];
+                    var terms = [scope.$nodeScope.$modelValue.id];
+                    treeServer.getConnectionsForTerms(terms).then(function (connections) {
+                        connections.forEach(function (item) {
+                            if ($scope._leftTree == item.Connection_Left_Tree_Id && $scope._rightTree == item.Connection_Right_Tree_Id) {
+                                item.Connection_IsDelete = true;
+                                treeServer.deleteConnection(item).then(function () {
+                                    removeLink({
+                                        firstId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
+                                        secondId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
+                                    });
+                                    $scope.redrawLines();
+                                    $scope.resetConnecting();
+                                });
+                            }
+
+                        });
+
+                    });
+                };
+
                 var remove = function (scope) {
                     // deleting the node in the server first, then (if success) delete it in UI
                     treeServer.deleteNode($scope.xmlFileId,
@@ -306,6 +336,11 @@
                     text: "Delete Term",
                     action: function (scope) {
                         remove(scope); // calls the remove function
+                    }
+                }, {
+                    text: "Delete Connection", // Text to displat the menu option
+                    action: function (scope) { // action to execute when clicked
+                        deleteConnection(scope); // calls the delete connextion function
                     }
                 }];
 
@@ -405,10 +440,14 @@
                     return $q(function (resolve, reject) {
                         treeServer.getConnectionsForTerms(nodes.map(function (item) { return item.id })).then(function (connections) {
                             connections.forEach(function (item) {
-                                addLink({
-                                    firstId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
-                                    secondId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
-                                });
+
+                                // filter connecions only not deleted
+                                if (!item.Connection_IsDelete) {
+                                    addLink({
+                                        firstId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
+                                        secondId: item.Connection_Right_Tree_Id + ":" + item.Connection_Right_Term_Id
+                                    });
+                                }
 
                                 /*addLink({
                                         secondId: item.Connection_Left_Tree_Id + ":" + item.Connection_Left_Term_Id,
@@ -833,6 +872,20 @@
         console.log('Connecting node [' + link.firstId + '] and [' + link.secondId + ']');
     }
 
+    /**
+     * remove  link between items to the cache
+     * @param link link
+     */
+    function removeLink(link) {
+        var newLinks = [];
+        links.forEach(function (l) {
+            if (l.firstId != link.firstId || l.secondId != link.secondId) {
+                newLinks.push(l);
+            }
+        })
+        links = angular.copy(newLinks);
+        console.log('Removing connection node [' + link.firstId + '] and [' + link.secondId + ']');
+    }
     /**
      * Find if there is a link between two items and return it
      * @param firstId

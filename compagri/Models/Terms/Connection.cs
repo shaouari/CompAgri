@@ -54,7 +54,7 @@ namespace CompAgri.Models.Terms
         public string Connection_Climate_Limitation { get; set; }
         public string Connection_Season_Limitation { get; set; }
         public string Connection_Measurement { get; set; }
-
+        public bool Connection_IsDelete { get; set; }
         public Connection Save()
         {
             using (var db = Database)
@@ -131,6 +131,36 @@ UPDATE [Connection]
             using (var db = Database)
             {
                 return db.Query<Connection>("SELECT c.*, lt.Term_XmlFile_id as Connection_Left_Tree_Id, rt.Term_XmlFile_id as Connection_Right_Tree_Id FROM [Connection] as c LEFT JOIN Term as lt on c.Connection_Left_Term_Id = lt.Term_Id LEFT JOIN Term as rt on c.Connection_Right_Term_Id = rt.Term_Id WHERE c.Connection_Left_Term_Id IN @Term_Ids OR c.Connection_Right_Term_Id IN @Term_Ids", new { Term_Ids = ids });
+            }
+        }
+
+        public Connection Delete()
+        {
+            using (var db = Database)
+            {
+                // Does not exist, inserting
+                if (this.Connection_Id > 0)
+                {
+
+                    // Exist, Updating
+                    db.Execute(@"
+UPDATE [Connection]
+   SET [Connection_Left_Term_Id] = @Connection_Left_Term_Id
+      ,[Connection_Right_Term_Id] = @Connection_Right_Term_Id
+      ,[Connection_Name] = @Connection_Name
+      ,[Connection_Synonym] = @Connection_Synonym
+      ,[Connection_Time_Limitation] = @Connection_Time_Limitation
+      ,[Connection_Position_Limitation] = @Connection_Position_Limitation
+      ,[Connection__Amount_Limitation] = @Connection__Amount_Limitation
+      ,[Connection_Climate_Limitation] = @Connection_Climate_Limitation
+      ,[Connection_Season_Limitation] = @Connection_Season_Limitation
+      ,[Connection_Measurement] = @Connection_Measurement
+      ,[Connection_IsDelete] = @Connection_IsDelete
+ WHERE Connection_Id = @Connection_Id", this);
+                }
+
+                return this;
+
             }
         }
     }

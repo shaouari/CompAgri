@@ -62,5 +62,12 @@ namespace CompAgri.Controllers
             return connection.Connection_Id;
             return 0;
         }
+        [Route("Delete")]
+        [HttpPost]
+        public int DeleteConnection([FromBody] Models.Terms.Connection connection)
+        {
+            connection.Delete();
+            return connection.Connection_Id;
+        }
     }
 }
