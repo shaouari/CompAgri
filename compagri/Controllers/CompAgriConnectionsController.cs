@@ -47,8 +47,10 @@ namespace CompAgri.Controllers
         [HttpGet]
         public IEnumerable<Models.Terms.Connection> getForTerms(string termIds)
         {
-            if (!String.IsNullOrWhiteSpace(termIds))
+            if (!String.IsNullOrWhiteSpace(termIds)){
                 return Models.Terms.Connection.GetForTerms(termIds.Split(',').Select(t => int.Parse(t)));
+               
+            }
             else
                 return new Models.Terms.Connection[] { };
         }
@@ -64,10 +66,10 @@ namespace CompAgri.Controllers
         }
         [Route("Delete")]
         [HttpPost]
-        public int DeleteConnection([FromBody] Models.Terms.Connection connection)
+        public int DeleteConnection([FromBody] int id)
         {
-            connection.Delete();
-            return connection.Connection_Id;
+            Models.Terms.Connection.Delete(id);
+            return 1;
         }
     }
 }
